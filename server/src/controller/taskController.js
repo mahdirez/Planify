@@ -69,3 +69,25 @@ export const updateTask = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const deleteTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        error: "Invalid task id",
+      });
+    }
+    const deletedTask = await pool.query(
+      "DELETE FROM tasks WHERE id = $1 RETURNING *",
+      [id],
+    );
+    if (deletedTask.rows.length === 0) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    return res.json(deletedTask.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
