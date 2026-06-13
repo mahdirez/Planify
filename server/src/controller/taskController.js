@@ -13,3 +13,15 @@ export const addTask = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getTasks = async (req, res) => {
+  try {
+    const tasks = await pool.query(
+      "SELECT * FROM tasks ORDER BY created_at DESC",
+    );
+    res.json(tasks.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
