@@ -39,3 +39,33 @@ export const getTaskById = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const updateTask = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, completed } = req.body;
+    if (Number.isNaN(Number(id))) {
+      return res.status(400).json({
+        error: "Invalid task id",
+      });
+    }
+
+    if (!description?.trim()) {
+      return res.status(400).json({
+        error: "Description is required",
+      });
+    }
+
+    const updatedTask = await pool.query(
+      "UPDATE tasks SET description = $1, completed = $2 WHERE id = $3 RETURNING *",
+      [description, completed, id],
+    );
+    if (updatedTask.rows.length === 0) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    return res.json(updatedTask.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
