@@ -12,10 +12,10 @@ export const addTask = async (req, res) => {
       "INSERT INTO tasks (description, completed) VALUES ($1, $2) RETURNING *",
       [description, completed || false],
     );
-    return res.json(newTask.rows[0]);
+    return res.status(201).json(newTask.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -24,10 +24,10 @@ export const getTasks = async (req, res) => {
     const tasks = await pool.query(
       "SELECT * FROM tasks ORDER BY created_at DESC",
     );
-   return res.json(tasks.rows);
+    return res.status(200).json(tasks.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -43,10 +43,10 @@ export const getTaskById = async (req, res) => {
     if (task.rows.length === 0) {
       return res.status(404).json({ error: "Task not found" });
     }
-   return res.json(task.rows[0]);
+    return res.json(task.rows[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -73,7 +73,7 @@ export const updateTask = async (req, res) => {
     if (updatedTask.rows.length === 0) {
       return res.status(404).json({ error: "Task not found" });
     }
-    return res.json(updatedTask.rows[0]);
+    return res.status(200).json(updatedTask.rows[0]);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -95,7 +95,7 @@ export const deleteTask = async (req, res) => {
     if (deletedTask.rows.length === 0) {
       return res.status(404).json({ error: "Task not found" });
     }
-    return res.json(deletedTask.rows[0]);
+    return res.status(200).json(deletedTask.rows[0]);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
