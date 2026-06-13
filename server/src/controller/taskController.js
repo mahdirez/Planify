@@ -25,3 +25,17 @@ export const getTasks = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getTaskById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await pool.query("SELECT * FROM tasks WHERE id = $1", [id]);
+    if (task.rows.length === 0) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    res.json(task.rows[0]);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
