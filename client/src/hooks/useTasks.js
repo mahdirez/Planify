@@ -5,8 +5,15 @@ import {
   updateTaskApi,
   deleteTaskApi,
 } from "../api/tasks.api";
+import {
+  toastDeleted,
+  toastError,
+  toastFail,
+  toastLoading,
+  toastSuccess,
+} from "../utils/toast";
 
-export function useTasks({ showToast, updateToast } = {}) {
+export function useTasks() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,7 +28,7 @@ export function useTasks({ showToast, updateToast } = {}) {
     } catch {
       const msg = "Failed to load tasks";
       setError(msg);
-      showToast?.(msg, "error");
+      toastFail(msg);
     } finally {
       setLoading(false);
     }
@@ -32,7 +39,7 @@ export function useTasks({ showToast, updateToast } = {}) {
   }, []);
 
   const addTask = async (description) => {
-    const toastId = showToast?.("Adding task...", "loading");
+    const toastId = toastLoading("Adding task...");
 
     try {
       setActionLoading({ action: "add" });
@@ -43,24 +50,24 @@ export function useTasks({ showToast, updateToast } = {}) {
       });
 
       setTasks((prev) => [...prev, res.data]);
-      updateToast?.(toastId, "Task added successfully", "success");
+      toastSuccess(toastId, "Task added successfully");
     } catch {
-      updateToast?.(toastId, "Failed to add task", "error");
+      toastError(toastId, "Failed to add task");
     } finally {
       setActionLoading(null);
     }
   };
 
   const deleteTask = async (id) => {
-    const toastId = showToast?.("Deleting task...", "loading");
+    const toastId = toastLoading("Deleting task...");
 
     try {
       setActionLoading({ id, action: "delete" });
       await deleteTaskApi(id);
       setTasks((prev) => prev.filter((t) => t.id !== id));
-      updateToast?.(toastId, "Task deleted", "destructive");
+      toastDeleted(toastId, "Task deleted");
     } catch {
-      updateToast?.(toastId, "Failed to delete task", "error");
+      toastError(toastId, "Failed to delete task");
     } finally {
       setActionLoading(null);
     }
@@ -83,7 +90,7 @@ export function useTasks({ showToast, updateToast } = {}) {
         ),
       );
     } catch {
-      showToast?.("Failed to update task", "error");
+      toastFail("Failed to update task");
     } finally {
       setActionLoading(null);
     }
@@ -93,7 +100,7 @@ export function useTasks({ showToast, updateToast } = {}) {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
 
-    const toastId = showToast?.("Saving changes...", "loading");
+    const toastId = toastLoading("Saving changes...");
 
     try {
       setActionLoading({ id, action: "edit" });
@@ -105,9 +112,9 @@ export function useTasks({ showToast, updateToast } = {}) {
       setTasks((prev) =>
         prev.map((t) => (t.id === id ? { ...t, description: newText } : t)),
       );
-      updateToast?.(toastId, "Task updated", "success");
+      toastSuccess(toastId, "Task updated");
     } catch {
-      updateToast?.(toastId, "Failed to save changes", "error");
+      toastError(toastId, "Failed to save changes");
     } finally {
       setActionLoading(null);
     }

@@ -1,13 +1,19 @@
 import { useState } from "react";
 import TaskItem from "./components/TaskItem";
-import Toast from "./components/Toast";
 import { useTasks } from "./hooks/useTasks";
-import { useToast } from "./hooks/useToast";
 
 function App() {
-  const { toasts, showToast, updateToast, dismiss } = useToast();
-  const { tasks, loading, error, actionLoading, addTask, deleteTask, toggleTask, saveEdit, refetch } =
-    useTasks({ showToast, updateToast });
+  const {
+    tasks,
+    loading,
+    error,
+    actionLoading,
+    addTask,
+    deleteTask,
+    toggleTask,
+    saveEdit,
+    refetch,
+  } = useTasks();
 
   const [description, setDescription] = useState("");
   const isAdding = actionLoading?.action === "add";
@@ -22,8 +28,6 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-slate-900 flex justify-center items-center p-4">
-      <Toast toasts={toasts} onDismiss={dismiss} />
-
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
