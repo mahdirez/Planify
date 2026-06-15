@@ -3,14 +3,16 @@ import pool from "../config/db.js";
 export const addTask = async (req, res) => {
   try {
     const { description, completed } = req.body;
+    const userId = req.user.id; 
+
     if (!description?.trim()) {
       return res.status(400).json({
         error: "Description is required",
       });
     }
     const newTask = await pool.query(
-      "INSERT INTO tasks (description, completed) VALUES ($1, $2) RETURNING *",
-      [description, completed || false],
+      "INSERT INTO tasks (description, completed, user_id) VALUES ($1, $2, $3) RETURNING *",
+      [description, completed || false, userId],
     );
     return res.status(201).json(newTask.rows[0]);
   } catch (error) {
@@ -21,8 +23,10 @@ export const addTask = async (req, res) => {
 
 export const getTasks = async (req, res) => {
   try {
+    const userId = req.user.id;
     const tasks = await pool.query(
-      "SELECT * FROM tasks ORDER BY created_at DESC",
+      "SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC",
+      [userId]
     );
     return res.status(200).json(tasks.rows);
   } catch (error) {
@@ -34,14 +38,16 @@ export const getTasks = async (req, res) => {
 export const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
+
     if (Number.isNaN(Number(id))) {
       return res.status(400).json({
         error: "Invalid task id",
       });
     }
-    const task = await pool.query("SELECT * FROM tasks WHERE id = $1", [id]);
+    const task = await pool.query("SELECT * FROM tasks WHERE id = $1 AND user_id = $2", [id, userId]);
     if (task.rows.length === 0) {
-      return res.status(404).json({ error: "Task not found" });
+      return res.status(404).json({ error: "Task not found or unauthorized" });
     }
     return res.json(task.rows[0]);
   } catch (error) {
@@ -54,6 +60,8 @@ export const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
     const { description, completed } = req.body;
+    const userId = req.user.id;
+
     if (Number.isNaN(Number(id))) {
       return res.status(400).json({
         error: "Invalid task id",
@@ -67,11 +75,11 @@ export const updateTask = async (req, res) => {
     }
 
     const updatedTask = await pool.query(
-      "UPDATE tasks SET description = $1, completed = $2 WHERE id = $3 RETURNING *",
-      [description, completed, id],
+      "UPDATE tasks SET description = $1, completed = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
+      [description, completed, id, userId],
     );
     if (updatedTask.rows.length === 0) {
-      return res.status(404).json({ error: "Task not found" });
+      return res.status(404).json({ error: "Task not found or unauthorized" });
     }
     return res.status(200).json(updatedTask.rows[0]);
   } catch (error) {
@@ -83,17 +91,19 @@ export const updateTask = async (req, res) => {
 export const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
+
     if (Number.isNaN(Number(id))) {
       return res.status(400).json({
         error: "Invalid task id",
       });
     }
     const deletedTask = await pool.query(
-      "DELETE FROM tasks WHERE id = $1 RETURNING *",
-      [id],
+      "DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *",
+      [id, userId],
     );
     if (deletedTask.rows.length === 0) {
-      return res.status(404).json({ error: "Task not found" });
+      return res.status(404).json({ error: "Task not found or unauthorized" });
     }
     return res.status(200).json(deletedTask.rows[0]);
   } catch (error) {
