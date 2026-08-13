@@ -6,17 +6,18 @@ import {
   updateTask,
   deleteTask,
 } from "../controller/taskController.js";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
 const router = Router();
 
-router.post("/", addTask);
+router.post("/", asyncHandler(addTask));
 
-router.get("/", getTasks);
+router.get("/", asyncHandler(getTasks));
 
-router.get("/:id", getTaskById);
+router.get("/:id", asyncHandler(getTaskById));
 
-router.put("/:id", updateTask);
+router.put("/:id", asyncHandler(updateTask));
 
-router.delete("/:id", deleteTask);
+router.delete("/:id", asyncHandler(deleteTask));
 
 export default router;
