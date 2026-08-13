@@ -1,17 +1,11 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { registerSchema, loginSchema } from "../validation/auth.validation.js";
 import pool from "../config/db.js";
 
 // Register Controller
 export const register = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    const { error, value } = registerSchema.validate({ email, password });
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
 
     const existingUser = await pool.query(
       "SELECT id FROM users WHERE email = $1",
@@ -53,11 +47,6 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    const { error } = loginSchema.validate({ email, password });
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
 
     const user = await pool.query(
       "SELECT id, email, password_hash FROM users WHERE email = $1",
