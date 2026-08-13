@@ -1,23 +1,7 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import Joi from "joi";
+import { registerSchema, loginSchema } from "../validation/auth.validation.js";
 import pool from "../config/db.js";
-
-//  Register Validation Schema
-const registerSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string()
-    .min(8)
-    .pattern(/[A-Z]/)
-    .pattern(/[a-z]/)
-    .pattern(/[0-9]/)
-    .pattern(/[!@#$%^&*]/)
-    .required()
-    .messages({
-      "string.pattern.base":
-        "Password must contain uppercase, lowercase, number, and symbol (!@#$%^&*)",
-    }),
-});
 
 // Register Controller
 export const register = async (req, res) => {
@@ -65,12 +49,6 @@ export const register = async (req, res) => {
   }
 };
 
-//  Login Validation Schema
-const loginSchema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().required(),
-});
-
 //  Login Controller
 export const login = async (req, res) => {
   try {
@@ -89,7 +67,6 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-   
     const isPasswordValid = await bcryptjs.compare(
       password,
       user.rows[0].password_hash,
