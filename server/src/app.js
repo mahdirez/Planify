@@ -4,8 +4,12 @@ import taskRoutes from "./routes/taskRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 
 const app = express();
+
+app.use(helmet());
 
 app.use(
     cors({
@@ -13,9 +17,19 @@ app.use(
         credentials: true,
     }),
 );
-app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+app.use(express.json({ limit: "100kb" }));
+
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many attempts, please try again later" },
+});
+
+app.use("/api/auth", authLimiter, authRoutes);
+
 app.use("/api/tasks", authMiddleware, taskRoutes);
 
 app.use(errorHandler);
