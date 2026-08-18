@@ -55,7 +55,8 @@ export const getTaskById = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   const { id } = req.params;
-  const { description, completed } = req.body;
+  const { description } = req.body;
+  const completed = req.body.completed ?? false;
   const userId = req.user.id;
 
   if (Number.isNaN(Number(id))) {
