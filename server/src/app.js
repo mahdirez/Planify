@@ -6,6 +6,7 @@ import { authMiddleware } from "./middleware/authMiddleware.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -31,6 +32,8 @@ const authLimiter = rateLimit({
 app.use("/api/auth", authLimiter, authRoutes);
 
 app.use("/api/tasks", authMiddleware, taskRoutes);
+
+app.use("/api/users", authMiddleware, userRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
