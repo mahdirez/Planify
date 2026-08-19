@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import ActivityLogsPage from "./pages/ActivityLogsPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   const auth = useAuth();
@@ -70,6 +71,14 @@ function App() {
                       <AdminRoute isAdmin={auth.isAdmin}>
                           <ActivityLogsPage />
                       </AdminRoute>
+                  </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/dashboard"
+              element={
+                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
+                      <DashboardPage />
                   </ProtectedRoute>
               }
           />
