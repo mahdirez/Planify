@@ -74,6 +74,8 @@ export function useAuth() {
     localStorage.removeItem("user");
   };
 
+    const isAdmin = user?.role === "admin";
+
   return {
     user,
     token,
@@ -83,5 +85,6 @@ export function useAuth() {
     login,
     logout,
     isAuthenticated: !!token,
+      isAdmin
   };
 }
