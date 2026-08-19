@@ -19,7 +19,7 @@ export const register = async (req, res) => {
   const hashedPassword = await bcryptjs.hash(password, 10);
 
   const newUser = await pool.query(
-    "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email, created_at",
+    "INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email, role, created_at",
     [email, hashedPassword],
   );
 
@@ -27,6 +27,7 @@ export const register = async (req, res) => {
     {
       id: newUser.rows[0].id,
       email: newUser.rows[0].email,
+        role: newUser.rows[0].role,
     },
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
@@ -37,6 +38,7 @@ export const register = async (req, res) => {
     user: {
       id: newUser.rows[0].id,
       email: newUser.rows[0].email,
+        role: newUser.rows[0].role,
     },
     token,
   });
@@ -46,7 +48,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await pool.query(
-    "SELECT id, email, password_hash FROM users WHERE email = $1",
+    "SELECT id, email, password_hash, role FROM users WHERE email = $1",
     [email],
   );
 
@@ -71,6 +73,7 @@ export const login = async (req, res) => {
     {
       id: user.rows[0].id,
       email: user.rows[0].email,
+        role: user.rows[0].role,
     },
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
@@ -81,6 +84,7 @@ export const login = async (req, res) => {
     user: {
       id: user.rows[0].id,
       email: user.rows[0].email,
+        role: user.rows[0].role,
     },
     token,
   });
