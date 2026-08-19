@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import pool from "../config/db.js";
+import { logActivity } from "../services/activityLog.service.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -32,6 +33,8 @@ export const register = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
+
+  await logActivity(newUser.rows[0].id, "register", `User registered: ${email}`);
 
   return res.status(201).json({
     message: "User registered successfully",
@@ -78,6 +81,8 @@ export const login = async (req, res) => {
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
+
+  await logActivity(user.rows[0].id, "login", `User logged in: ${email}`);
 
   return res.status(200).json({
     message: "Login successful",
