@@ -6,6 +6,7 @@ import TasksPage from "./pages/TasksPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import ActivityLogsPage from "./pages/ActivityLogsPage";
 
 function App() {
   const auth = useAuth();
@@ -58,6 +59,16 @@ function App() {
                   <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
                       <AdminRoute isAdmin={auth.isAdmin}>
                           <AdminUsersPage />
+                      </AdminRoute>
+                  </ProtectedRoute>
+              }
+          />
+          <Route
+              path="/admin/logs"
+              element={
+                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
+                      <AdminRoute isAdmin={auth.isAdmin}>
+                          <ActivityLogsPage />
                       </AdminRoute>
                   </ProtectedRoute>
               }

@@ -64,6 +64,16 @@ export default function TasksPage({ auth }) {
                         Manage Users
                     </Link>
                 )}
+
+                {auth.isAdmin && (
+                    <Link
+                        to="/admin/logs"
+                        className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
+                    >
+                        Activity Logs
+                    </Link>
+                )}
+
               <button
                 onClick={handleLogout}
                 className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
