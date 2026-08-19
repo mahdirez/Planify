@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { logActivity } from "../services/activityLog.service.js";
 
 export const addTask = async (req, res) => {
   const { description, completed } = req.body;
@@ -14,6 +15,8 @@ export const addTask = async (req, res) => {
     "INSERT INTO tasks (description, completed, user_id) VALUES ($1, $2, $3) RETURNING *",
     [description, completed || false, userId],
   );
+
+  await logActivity(userId, "task_create", `Created task #${newTask.rows[0].id}`);
 
   return res.status(201).json(newTask.rows[0]);
 };
@@ -82,6 +85,8 @@ export const updateTask = async (req, res) => {
     });
   }
 
+  await logActivity(userId, "task_update", `Updated task #${id}`);
+
   return res.status(200).json(updatedTask.rows[0]);
 };
 
@@ -105,6 +110,7 @@ export const deleteTask = async (req, res) => {
       error: "Task not found or unauthorized",
     });
   }
+  await logActivity(userId, "task_delete", `Deleted task #${id}`);
 
   return res.status(200).json(deletedTask.rows[0]);
 };
