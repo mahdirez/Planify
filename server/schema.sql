@@ -1,5 +1,7 @@
--- Planify database schema
--- Run after creating the database: psql -U postgres -d planify -f schema.sql
+-- ⚠️ DEPRECATED: This file is kept only as a historical reference.
+-- Do NOT run this manually. Database schema is now managed entirely
+-- through migrations in server/migrations/. To set up a fresh database,
+-- create an empty database and run: npm run migrate:up
 
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
