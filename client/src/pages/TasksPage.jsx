@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../hooks/useTasks";
+import { Link } from "react-router-dom";
 
 export default function TasksPage({ auth }) {
   const navigate = useNavigate();
@@ -55,6 +56,14 @@ export default function TasksPage({ auth }) {
                 <p className="text-sm text-slate-500">Signed in as</p>
                 <p className="font-medium text-white">{user?.email}</p>
               </div>
+                {auth.isAdmin && (
+                    <Link
+                        to="/admin/users"
+                        className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
+                    >
+                        Manage Users
+                    </Link>
+                )}
               <button
                 onClick={handleLogout}
                 className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
