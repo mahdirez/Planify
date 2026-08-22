@@ -8,3 +8,6 @@ client/node_modules
 server/node_modules
 
 server/.env
+
+uploads/*
+!uploads/.gitkeep
