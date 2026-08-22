@@ -19,24 +19,35 @@ export function useTasks() {
   const [error, setError] = useState(null);
   const [actionLoading, setActionLoading] = useState(null);
 
-  const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const res = await getTasksApi();
-      setTasks(res.data);
-    } catch {
-      const msg = "Failed to load tasks";
-      setError(msg);
-      toastFail(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const [search, setSearch] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+    const fetchTasks = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            const params = {};
+            if (search.trim()) params.q = search.trim();
+            if (statusFilter !== "all") params.completed = statusFilter;
+
+            const res = await getTasksApi(params);
+            setTasks(res.data);
+        } catch {
+            const msg = "Failed to load tasks";
+            setError(msg);
+            toastFail(msg);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            fetchTasks();
+        }, 400);
+
+        return () => clearTimeout(timeoutId);
+    }, [search, statusFilter]);
 
   const addTask = async (description) => {
     const toastId = toastLoading("Adding task...");
@@ -120,15 +131,19 @@ export function useTasks() {
     }
   };
 
-  return {
-    tasks,
-    loading,
-    error,
-    actionLoading,
-    addTask,
-    deleteTask,
-    toggleTask,
-    saveEdit,
-    refetch: fetchTasks,
-  };
+    return {
+        tasks,
+        loading,
+        error,
+        actionLoading,
+        addTask,
+        deleteTask,
+        toggleTask,
+        saveEdit,
+        refetch: fetchTasks,
+        search,
+        setSearch,
+        statusFilter,
+        setStatusFilter,
+    };
 }

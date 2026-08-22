@@ -1,6 +1,6 @@
 import { api } from "./client";
 
-export const getTasksApi = () => api.get("/api/tasks");
+export const getTasksApi = (params = {}) => api.get("/api/tasks", { params });
 
 export const createTaskApi = (data) => api.post("/api/tasks", data);
 
