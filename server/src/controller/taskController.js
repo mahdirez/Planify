@@ -22,14 +22,30 @@ export const addTask = async (req, res) => {
 };
 
 export const getTasks = async (req, res) => {
-  const userId = req.user.id;
+    const userId = req.user.id;
+    const { q, completed } = req.query;
 
-  const tasks = await pool.query(
-    "SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC",
-    [userId],
-  );
+    const conditions = ["user_id = $1"];
+    const values = [userId];
+    let paramIndex = 2;
 
-  return res.status(200).json(tasks.rows);
+    if (q?.trim()) {
+        conditions.push(`description ILIKE $${paramIndex}`);
+        values.push(`%${q.trim()}%`);
+        paramIndex++;
+    }
+
+    if (completed === "true" || completed === "false") {
+        conditions.push(`completed = $${paramIndex}`);
+        values.push(completed === "true");
+        paramIndex++;
+    }
+
+    const query = `SELECT * FROM tasks WHERE ${conditions.join(" AND ")} ORDER BY created_at DESC`;
+
+    const tasks = await pool.query(query, values);
+
+    return res.status(200).json(tasks.rows);
 };
 
 export const getTaskById = async (req, res) => {
