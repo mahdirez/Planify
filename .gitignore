@@ -9,5 +9,5 @@ server/node_modules
 
 server/.env
 
-uploads/*
-!uploads/.gitkeep
+server/uploads/*
+!server/uploads/.gitkeep
