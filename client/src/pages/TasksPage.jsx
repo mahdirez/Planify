@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TaskItem from "../components/TaskItem";
 import { useTasks } from "../hooks/useTasks";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination";
 
 export default function TasksPage({ auth }) {
   const navigate = useNavigate();
@@ -21,6 +22,9 @@ export default function TasksPage({ auth }) {
         setSearch,
         statusFilter,
         setStatusFilter,
+        page,
+        setPage,
+        totalPages,
     } = useTasks();
 
   const [description, setDescription] = useState("");
@@ -100,7 +104,6 @@ export default function TasksPage({ auth }) {
             </div>
           </div>
         </header>
-
         <section className="mb-6 rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
           <form onSubmit={submit} className="flex flex-col gap-3 sm:flex-row">
             <label className="sr-only" htmlFor="taskDescription">
@@ -123,7 +126,6 @@ export default function TasksPage({ auth }) {
             </button>
           </form>
         </section>
-
           <section className="mb-6 rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
               <div className="flex flex-col gap-3 sm:flex-row">
                   <input
@@ -143,13 +145,11 @@ export default function TasksPage({ auth }) {
                   </select>
               </div>
           </section>
-
         {error && (
           <div className="mb-6 rounded-3xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
             {error}
           </div>
         )}
-
         <section className="rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
           {loading ? (
             <div className="flex flex-col items-center justify-center gap-3 py-16 text-slate-400">
@@ -186,6 +186,7 @@ export default function TasksPage({ auth }) {
           )}
         </section>
       </div>
+        <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }
