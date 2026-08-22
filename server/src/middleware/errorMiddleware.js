@@ -4,4 +4,11 @@ export const errorHandler = (err, req, res, next) => {
   res.status(err.status || 500).json({
     error: err.message || "Internal Server Error",
   });
+
+    if (err.name === "MulterError") {
+        return res.status(400).json({ error: err.message });
+    }
+    if (err.message === "Unsupported file type") {
+        return res.status(400).json({ error: err.message });
+    }
 };
