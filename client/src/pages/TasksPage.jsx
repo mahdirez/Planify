@@ -7,17 +7,21 @@ import { Link } from "react-router-dom";
 export default function TasksPage({ auth }) {
   const navigate = useNavigate();
   const { user, logout } = auth;
-  const {
-    tasks,
-    loading,
-    error,
-    actionLoading,
-    addTask,
-    deleteTask,
-    toggleTask,
-    saveEdit,
-    refetch,
-  } = useTasks();
+    const {
+        tasks,
+        loading,
+        error,
+        actionLoading,
+        addTask,
+        deleteTask,
+        toggleTask,
+        saveEdit,
+        refetch,
+        search,
+        setSearch,
+        statusFilter,
+        setStatusFilter,
+    } = useTasks();
 
   const [description, setDescription] = useState("");
   const isAdding = actionLoading?.action === "add";
@@ -119,6 +123,26 @@ export default function TasksPage({ auth }) {
             </button>
           </form>
         </section>
+
+          <section className="mb-6 rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
+              <div className="flex flex-col gap-3 sm:flex-row">
+                  <input
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      placeholder="Search tasks..."
+                      className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
+                  />
+                  <select
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
+                  >
+                      <option value="all">All</option>
+                      <option value="true">Completed</option>
+                      <option value="false">Pending</option>
+                  </select>
+              </div>
+          </section>
 
         {error && (
           <div className="mb-6 rounded-3xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
