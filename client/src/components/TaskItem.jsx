@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdModeEditOutline, MdOutlineDone } from "react-icons/md";
 import { FaTrash } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
+import TaskAttachments from "./TaskAttachments";
 
 export default function TaskItem({
   task,
@@ -74,63 +75,66 @@ export default function TaskItem({
           </div>
         </div>
       ) : (
-        <div className="flex justify-between items-center gap-4">
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={() => onToggle(task.id)}
-              disabled={isBusy}
-              title={task.completed ? "Mark incomplete" : "Mark complete"}
-              className={`h-7 w-7 shrink-0 border-2 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
-                task.completed
-                  ? "bg-green-500 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
-                  : "border-gray-300 hover:border-green-400 hover:bg-green-50"
-              }`}
-            >
-              {isToggling ? (
-                <span className="h-3.5 w-3.5 rounded-full border-2 border-gray-300 border-t-green-500 animate-spin" />
-              ) : (
-                task.completed && <MdOutlineDone size={16} />
-              )}
-            </button>
+          <>
+              <div className="flex justify-between items-center gap-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                      <button
+                          onClick={() => onToggle(task.id)}
+                          disabled={isBusy}
+                          title={task.completed ? "Mark incomplete" : "Mark complete"}
+                          className={`h-7 w-7 shrink-0 border-2 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 ${
+                              task.completed
+                                  ? "bg-green-500 border-green-500 text-white hover:bg-green-600 hover:border-green-600"
+                                  : "border-gray-300 hover:border-green-400 hover:bg-green-50"
+                          }`}
+                      >
+                          {isToggling ? (
+                              <span className="h-3.5 w-3.5 rounded-full border-2 border-gray-300 border-t-green-500 animate-spin" />
+                          ) : (
+                              task.completed && <MdOutlineDone size={16} />
+                          )}
+                      </button>
 
-            <span
-              className={`truncate transition-colors ${
-                task.completed
-                  ? "text-gray-400 line-through"
-                  : "text-gray-800"
-              }`}
-            >
+                      <span
+                          className={`truncate transition-colors ${
+                              task.completed
+                                  ? "text-gray-400 line-through"
+                                  : "text-gray-800"
+                          }`}
+                      >
               {task.description}
             </span>
-          </div>
+                  </div>
 
-          <div className="flex gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={() => {
-                setIsEditing(true);
-                setText(task.description);
-              }}
-              disabled={isBusy}
-              title="Edit"
-              className="p-2 text-blue-500 rounded-lg hover:bg-blue-50 hover:text-blue-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              <MdModeEditOutline size={18} />
-            </button>
+                  <div className="flex gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                      <button
+                          onClick={() => {
+                              setIsEditing(true);
+                              setText(task.description);
+                          }}
+                          disabled={isBusy}
+                          title="Edit"
+                          className="p-2 text-blue-500 rounded-lg hover:bg-blue-50 hover:text-blue-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      >
+                          <MdModeEditOutline size={18} />
+                      </button>
 
-            <button
-              onClick={() => onDelete(task.id)}
-              disabled={isBusy}
-              title="Delete"
-              className="p-2 text-red-500 rounded-lg hover:bg-red-50 hover:text-red-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              {isDeleting ? (
-                <span className="block h-[18px] w-[18px] rounded-full border-2 border-red-200 border-t-red-500 animate-spin" />
-              ) : (
-                <FaTrash size={16} />
-              )}
-            </button>
-          </div>
-        </div>
+                      <button
+                          onClick={() => onDelete(task.id)}
+                          disabled={isBusy}
+                          title="Delete"
+                          className="p-2 text-red-500 rounded-lg hover:bg-red-50 hover:text-red-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      >
+                          {isDeleting ? (
+                              <span className="block h-[18px] w-[18px] rounded-full border-2 border-red-200 border-t-red-500 animate-spin" />
+                          ) : (
+                              <FaTrash size={16} />
+                          )}
+                      </button>
+                  </div>
+              </div>
+              <TaskAttachments taskId={task.id} />
+          </>
       )}
     </div>
   );
