@@ -25,6 +25,10 @@ export const getTasks = async (req, res) => {
     const userId = req.user.id;
     const { q, completed } = req.query;
 
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 10));
+    const offset = (page - 1) * limit;
+
     const conditions = ["user_id = $1"];
     const values = [userId];
     let paramIndex = 2;
@@ -41,11 +45,31 @@ export const getTasks = async (req, res) => {
         paramIndex++;
     }
 
-    const query = `SELECT * FROM tasks WHERE ${conditions.join(" AND ")} ORDER BY created_at DESC`;
+    const whereClause = conditions.join(" AND ");
 
-    const tasks = await pool.query(query, values);
+    const countResult = await pool.query(
+        `SELECT COUNT(*)::int AS total FROM tasks WHERE ${whereClause}`,
+        values,
+    );
+    const total = countResult.rows[0].total;
 
-    return res.status(200).json(tasks.rows);
+    const dataQuery = `
+        SELECT * FROM tasks
+        WHERE ${whereClause}
+        ORDER BY created_at DESC
+            LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
+    `;
+    const tasks = await pool.query(dataQuery, [...values, limit, offset]);
+
+    return res.status(200).json({
+        data: tasks.rows,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+        },
+    });
 };
 
 export const getTaskById = async (req, res) => {
