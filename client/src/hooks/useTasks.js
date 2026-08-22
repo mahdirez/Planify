@@ -22,16 +22,20 @@ export function useTasks() {
     const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] = useState("all");
 
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
     const fetchTasks = async () => {
         try {
             setLoading(true);
             setError(null);
-            const params = {};
+            const params = { page, limit: 10 };
             if (search.trim()) params.q = search.trim();
             if (statusFilter !== "all") params.completed = statusFilter;
 
             const res = await getTasksApi(params);
-            setTasks(res.data);
+            setTasks(res.data.data);
+            setTotalPages(res.data.pagination.totalPages);
         } catch {
             const msg = "Failed to load tasks";
             setError(msg);
@@ -42,12 +46,16 @@ export function useTasks() {
     };
 
     useEffect(() => {
+        setPage(1);
+    }, [search, statusFilter]);
+
+    useEffect(() => {
         const timeoutId = setTimeout(() => {
             fetchTasks();
         }, 400);
 
         return () => clearTimeout(timeoutId);
-    }, [search, statusFilter]);
+    }, [search, statusFilter, page]);
 
   const addTask = async (description) => {
     const toastId = toastLoading("Adding task...");
@@ -145,5 +153,8 @@ export function useTasks() {
         setSearch,
         statusFilter,
         setStatusFilter,
+        page,
+        setPage,
+        totalPages,
     };
 }
