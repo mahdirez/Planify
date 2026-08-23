@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function RegisterPage({ auth }) {
     const navigate = useNavigate();
@@ -27,6 +28,9 @@ export default function RegisterPage({ auth }) {
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
             <div className="max-w-md w-full bg-slate-900/95 border border-slate-800 rounded-3xl p-8 shadow-2xl shadow-slate-950/40">
+                <div className="mb-4 flex justify-end">
+                    <LanguageSwitcher />
+                </div>
                 <div className="mb-8 text-center">
                     <h1 className="text-3xl font-semibold">{t("auth.createAccount")}</h1>
                     <p className="mt-2 text-slate-400">{t("auth.registerSubtitle")}</p>
