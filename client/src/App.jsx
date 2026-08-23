@@ -9,9 +9,18 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import ActivityLogsPage from "./pages/ActivityLogsPage";
 import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function App() {
   const auth = useAuth();
+
+    const { i18n } = useTranslation();
+
+    useEffect(() => {
+        document.documentElement.dir = i18n.language === "fa" ? "rtl" : "ltr";
+        document.documentElement.lang = i18n.language;
+    }, [i18n.language]);
 
   if (auth.loading) {
     return (
