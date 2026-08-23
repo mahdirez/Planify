@@ -1,0 +1,47 @@
+{
+  "common": {
+    "appName": "پلنیفای",
+    "loading": "در حال بارگذاری...",
+    "save": "ذخیره",
+    "cancel": "انصراف",
+    "delete": "حذف",
+    "edit": "ویرایش",
+    "logout": "خروج"
+  },
+  "auth": {
+    "login": "ورود",
+    "register": "ثبت‌نام",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "loginButton": "ورود",
+    "registerButton": "ساخت حساب",
+    "noAccount": "حساب کاربری ندارید؟",
+    "haveAccount": "قبلاً ثبت‌نام کرده‌اید؟"
+  },
+  "tasks": {
+    "title": "داشبورد تسک‌های شما",
+    "subtitle": "تسک‌های روزانه‌ی خود را با امنیت مدیریت کنید. تسک‌ها فقط برای شما ذخیره می‌شوند.",
+    "signedInAs": "وارد شده به‌عنوان",
+    "addPlaceholder": "افزودن تسک جدید...",
+    "addButton": "افزودن تسک",
+    "adding": "در حال افزودن...",
+    "searchPlaceholder": "جستجوی تسک‌ها...",
+    "filterAll": "همه",
+    "filterCompleted": "انجام‌شده",
+    "filterPending": "در انتظار",
+    "noTasks": "هنوز تسکی نیست",
+    "noTasksSubtitle": "اولین تسک خود را بسازید.",
+    "completedCount": "{{completed}} از {{total}} انجام شده"
+  },
+  "nav": {
+    "manageUsers": "مدیریت کاربران",
+    "activityLogs": "گزارش فعالیت‌ها",
+    "dashboard": "داشبورد",
+    "systemDashboard": "داشبورد سیستم"
+  },
+  "pagination": {
+    "previous": "قبلی",
+    "next": "بعدی",
+    "pageOf": "صفحه {{page}} از {{totalPages}}"
+  }
+}

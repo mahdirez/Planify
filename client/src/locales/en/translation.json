@@ -1,0 +1,47 @@
+{
+  "common": {
+    "appName": "Planify",
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Sign in",
+    "registerButton": "Create account",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "tasks": {
+    "title": "Your task dashboard",
+    "subtitle": "Manage daily tasks securely with your account. Tasks are saved only for you.",
+    "signedInAs": "Signed in as",
+    "addPlaceholder": "Add a new task...",
+    "addButton": "Add task",
+    "adding": "Adding...",
+    "searchPlaceholder": "Search tasks...",
+    "filterAll": "All",
+    "filterCompleted": "Completed",
+    "filterPending": "Pending",
+    "noTasks": "No tasks yet",
+    "noTasksSubtitle": "Create your first task to get started.",
+    "completedCount": "{{completed}} of {{total}} completed"
+  },
+  "nav": {
+    "manageUsers": "Manage Users",
+    "activityLogs": "Activity Logs",
+    "dashboard": "Dashboard",
+    "systemDashboard": "System Dashboard"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{totalPages}}"
+  }
+}
