@@ -4,9 +4,14 @@ import TaskItem from "../components/TaskItem";
 import { useTasks } from "../hooks/useTasks";
 import { Link } from "react-router-dom";
 import Pagination from "../components/Pagination";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function TasksPage({ auth }) {
   const navigate = useNavigate();
+
+  const { t } = useTranslation();
+
   const { user, logout } = auth;
     const {
         tasks,
@@ -52,16 +57,15 @@ export default function TasksPage({ auth }) {
                 Planify
               </p>
               <h1 className="mt-2 text-4xl font-semibold tracking-tight">
-                Your task dashboard
+                  {t("tasks.title")}
               </h1>
               <p className="mt-3 max-w-2xl text-slate-400">
-                Manage daily tasks securely with your account. Tasks are saved
-                only for you.
+                  {t("tasks.subtitle")}
               </p>
             </div>
             <div className="flex items-center gap-3 rounded-3xl bg-slate-950/70 border border-slate-800 p-4">
               <div>
-                <p className="text-sm text-slate-500">Signed in as</p>
+                <p className="text-sm text-slate-500">{t("tasks.signedInAs")}</p>
                 <p className="font-medium text-white">{user?.email}</p>
               </div>
                 {auth.isAdmin && (
@@ -69,7 +73,7 @@ export default function TasksPage({ auth }) {
                         to="/admin/users"
                         className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
                     >
-                        Manage Users
+                        {t("nav.manageUsers")}
                     </Link>
                 )}
 
@@ -78,29 +82,30 @@ export default function TasksPage({ auth }) {
                         to="/admin/logs"
                         className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
                     >
-                        Activity Logs
+                        {t("nav.activityLogs")}
                     </Link>
                 )}
                 <Link
                     to="/dashboard"
                     className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
                 >
-                    Dashboard
+                    {t("nav.dashboard")}
                 </Link>
                 {auth.isAdmin && (
                     <Link
                         to="/admin/dashboard"
                         className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
                     >
-                        System Dashboard
+                        {t("nav.systemDashboard")}
                     </Link>
                 )}
               <button
                 onClick={handleLogout}
                 className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
               >
-                Logout
+                  {t("common.logout")}
               </button>
+                <LanguageSwitcher />
             </div>
           </div>
         </header>
@@ -113,7 +118,7 @@ export default function TasksPage({ auth }) {
               id="taskDescription"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Add a new task..."
+              placeholder={t("tasks.addPlaceholder")}
               className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-5 py-4 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
               disabled={isAdding}
             />
@@ -122,7 +127,7 @@ export default function TasksPage({ auth }) {
               disabled={isAdding || !description.trim()}
               className="rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-4 font-semibold text-slate-950 transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {isAdding ? "Adding..." : "Add task"}
+                {isAdding ? t("tasks.adding") : t("tasks.addButton")}
             </button>
           </form>
         </section>
@@ -131,7 +136,7 @@ export default function TasksPage({ auth }) {
                   <input
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Search tasks..."
+                      placeholder={t("tasks.searchPlaceholder")}
                       className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                   />
                   <select
@@ -139,9 +144,9 @@ export default function TasksPage({ auth }) {
                       onChange={(e) => setStatusFilter(e.target.value)}
                       className="rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
                   >
-                      <option value="all">All</option>
-                      <option value="true">Completed</option>
-                      <option value="false">Pending</option>
+                      <option value="all">{t("tasks.filterAll")}</option>
+                      <option value="true">{t("tasks.filterCompleted")}</option>
+                      <option value="false">{t("tasks.filterPending")}</option>
                   </select>
               </div>
           </section>
@@ -158,9 +163,9 @@ export default function TasksPage({ auth }) {
             </div>
           ) : tasks.length === 0 ? (
             <div className="text-center py-16 text-slate-500">
-              <p className="text-xl font-medium">No tasks yet</p>
+              <p className="text-xl font-medium">{t("tasks.noTasks")}</p>
               <p className="mt-2 text-slate-400">
-                Create your first task to get started.
+                  {t("tasks.noTasksSubtitle")}
               </p>
             </div>
           ) : (
@@ -180,13 +185,21 @@ export default function TasksPage({ auth }) {
 
           {!loading && tasks.length > 0 && (
             <div className="mt-6 rounded-3xl bg-slate-950/90 border border-slate-800 p-4 text-slate-400">
-              {tasks.filter((t) => t.completed).length} of {tasks.length}{" "}
-              completed
+                {t("tasks.completedCount", {
+                    completed: tasks.filter((t) => t.completed).length,
+                    total: tasks.length,
+                })}
             </div>
           )}
         </section>
       </div>
-        <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+        <Pagination page={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    previousLabel={t("pagination.previous")}
+                    nextLabel={t("pagination.next")}
+                    pageLabel={t("pagination.pageOf", { page, totalPages })}
+        />
     </div>
   );
 }
