@@ -16,7 +16,20 @@
     "loginButton": "Sign in",
     "registerButton": "Create account",
     "noAccount": "Don't have an account?",
-    "haveAccount": "Already have an account?"
+    "haveAccount": "Already have an account?",
+    "welcomeBack": "Welcome back",
+    "loginSubtitle": "Login to manage your tasks securely.",
+    "createAccount": "Create your account",
+    "registerSubtitle": "Register to save your tasks and access them anywhere.",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "Enter your password",
+    "strongPasswordPlaceholder": "Strong password",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account...",
+    "newHere": "New here?",
+    "createAccountLink": "Create an account",
+    "signInLink": "Sign in",
+    "validationError": "Please enter both email and password."
   },
   "tasks": {
     "title": "Your task dashboard",

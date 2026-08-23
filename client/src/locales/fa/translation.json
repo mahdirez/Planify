@@ -16,7 +16,20 @@
     "loginButton": "ورود",
     "registerButton": "ساخت حساب",
     "noAccount": "حساب کاربری ندارید؟",
-    "haveAccount": "قبلاً ثبت‌نام کرده‌اید؟"
+    "haveAccount": "قبلاً ثبت‌نام کرده‌اید؟",
+    "welcomeBack": "خوش برگشتی",
+    "loginSubtitle": "برای مدیریت امن تسک‌های خود وارد شوید.",
+    "createAccount": "ساخت حساب کاربری",
+    "registerSubtitle": "ثبت‌نام کنید تا تسک‌های خود را ذخیره کرده و از هر جا به آن‌ها دسترسی داشته باشید.",
+    "emailPlaceholder": "you@example.com",
+    "passwordPlaceholder": "رمز عبور خود را وارد کنید",
+    "strongPasswordPlaceholder": "یک رمز عبور قوی",
+    "signingIn": "در حال ورود...",
+    "creatingAccount": "در حال ساخت حساب...",
+    "newHere": "تازه واردی؟",
+    "createAccountLink": "ساخت حساب کاربری",
+    "signInLink": "ورود",
+    "validationError": "لطفاً ایمیل و رمز عبور را وارد کنید."
   },
   "tasks": {
     "title": "داشبورد تسک‌های شما",
