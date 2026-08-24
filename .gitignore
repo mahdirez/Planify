@@ -8,6 +8,7 @@ client/node_modules
 server/node_modules
 
 server/.env
+server/.env.test
 
 server/uploads/*
 !server/uploads/.gitkeep
