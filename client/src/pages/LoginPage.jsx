@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { MdCheckBoxOutlineBlank, MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 
 export default function LoginPage({ auth }) {
@@ -8,6 +9,7 @@ export default function LoginPage({ auth }) {
     const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [localError, setLocalError] = useState(null);
 
     const handleSubmit = async (e) => {
@@ -26,63 +28,95 @@ export default function LoginPage({ auth }) {
     };
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center px-4">
-            <div className="max-w-md w-full bg-slate-900/95 border border-slate-800 rounded-3xl p-8 shadow-2xl shadow-slate-950/40">
+        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 dark:bg-slate-950">
+            <div className="w-full max-w-sm">
                 <div className="mb-4 flex justify-end">
                     <LanguageSwitcher />
                 </div>
-                <div className="mb-8 text-center">
-                    <h1 className="text-3xl font-semibold">{t("auth.welcomeBack")}</h1>
-                    <p className="mt-2 text-slate-400">{t("auth.loginSubtitle")}</p>
-                </div>
 
-                {(auth.error || localError) && (
-                    <div className="mb-6 rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
-                        {auth.error || localError}
+                <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-6 flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-500 text-white">
+                            <MdCheckBoxOutlineBlank size={14} />
+                        </div>
+                        <span className="font-semibold text-slate-900 dark:text-white">
+              Planify
+            </span>
                     </div>
-                )}
 
-                <form className="space-y-4" onSubmit={handleSubmit}>
-                    <label className="block">
-                        <span className="text-sm text-slate-400">{t("auth.email")}</span>
-                        <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                            placeholder={t("auth.emailPlaceholder")}
-                        />
-                    </label>
+                    <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
+                        {t("auth.welcomeBack")}
+                    </h1>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                        {t("auth.loginSubtitle")}
+                    </p>
 
-                    <label className="block">
-                        <span className="text-sm text-slate-400">{t("auth.password")}</span>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                            placeholder={t("auth.passwordPlaceholder")}
-                        />
-                    </label>
+                    {(auth.error || localError) && (
+                        <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
+                            {auth.error || localError}
+                        </div>
+                    )}
 
-                    <button
-                        type="submit"
-                        disabled={auth.loading}
-                        className="w-full rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-5 py-3 text-white font-semibold transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                        {auth.loading ? t("auth.signingIn") : t("auth.loginButton")}
-                    </button>
-                </form>
+                    <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
+                        <label className="block">
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                {t("auth.email")}
+              </span>
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder={t("auth.emailPlaceholder")}
+                                className="mt-1.5 w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                            />
+                        </label>
 
-                <p className="mt-6 text-center text-sm text-slate-500">
-                    {t("auth.newHere")}{" "}
-                    <Link
-                        to="/register"
-                        className="font-semibold text-slate-100 hover:text-white"
-                    >
-                        {t("auth.createAccountLink")}
-                    </Link>
-                </p>
+                        <label className="block">
+              <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                {t("auth.password")}
+              </span>
+                            <div className="relative mt-1.5">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder={t("auth.passwordPlaceholder")}
+                                    className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 pe-10 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    className="absolute inset-y-0 end-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? (
+                                        <MdOutlineVisibilityOff size={18} />
+                                    ) : (
+                                        <MdOutlineVisibility size={18} />
+                                    )}
+                                </button>
+                            </div>
+                        </label>
+
+                        <button
+                            type="submit"
+                            disabled={auth.loading}
+                            className="w-full rounded-lg bg-brand-500 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                            {auth.loading ? t("auth.signingIn") : t("auth.loginButton")}
+                        </button>
+                    </form>
+
+                    <p className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
+                        {t("auth.newHere")}{" "}
+                        <Link
+                            to="/register"
+                            className="font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400"
+                        >
+                            {t("auth.createAccountLink")}
+                        </Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
