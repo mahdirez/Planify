@@ -11,6 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Layout from "./components/Layout";
 
 function App() {
   const auth = useAuth();
@@ -35,80 +36,70 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            auth.isAuthenticated ? (
-              <Navigate to="/app" replace />
-            ) : (
-              <LoginPage auth={auth} />
-            )
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            auth.isAuthenticated ? (
-              <Navigate to="/app" replace />
-            ) : (
-              <RegisterPage auth={auth} />
-            )
-          }
-        />
-        <Route
-          path="/app"
-          element={
-            <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
-              <TasksPage auth={auth} />
-            </ProtectedRoute>
-          }
-        />
-          <Route
-              path="/admin/users"
-              element={
-                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
-                      <AdminRoute isAdmin={auth.isAdmin}>
-                          <AdminUsersPage />
-                      </AdminRoute>
-                  </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/logs"
-              element={
-                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
-                      <AdminRoute isAdmin={auth.isAdmin}>
-                          <ActivityLogsPage />
-                      </AdminRoute>
-                  </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/dashboard"
-              element={
-                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
-                      <DashboardPage />
-                  </ProtectedRoute>
-              }
-          />
-          <Route
-              path="/admin/dashboard"
-              element={
-                  <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
-                      <AdminRoute isAdmin={auth.isAdmin}>
-                          <AdminDashboardPage />
-                      </AdminRoute>
-                  </ProtectedRoute>
-              }
-          />
-        <Route
-          path="*"
-          element={
-            <Navigate to={auth.isAuthenticated ? "/app" : "/login"} replace />
-          }
-        />
-      </Routes>
+        <Routes>
+            <Route
+                path="/login"
+                element={
+                    auth.isAuthenticated ? (
+                        <Navigate to="/app" replace />
+                    ) : (
+                        <LoginPage auth={auth} />
+                    )
+                }
+            />
+            <Route
+                path="/register"
+                element={
+                    auth.isAuthenticated ? (
+                        <Navigate to="/app" replace />
+                    ) : (
+                        <RegisterPage auth={auth} />
+                    )
+                }
+            />
+
+            <Route
+                element={
+                    <ProtectedRoute isAuthenticated={auth.isAuthenticated}>
+                        <Layout auth={auth} />
+                    </ProtectedRoute>
+                }
+            >
+                <Route path="/app" element={<TasksPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route
+                    path="/admin/users"
+                    element={
+                        <AdminRoute isAdmin={auth.isAdmin}>
+                            <AdminUsersPage />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/logs"
+                    element={
+                        <AdminRoute isAdmin={auth.isAdmin}>
+                            <ActivityLogsPage />
+                        </AdminRoute>
+                    }
+                />
+                <Route
+                    path="/admin/dashboard"
+                    element={
+                        <AdminRoute isAdmin={auth.isAdmin}>
+                            <AdminDashboardPage />
+                        </AdminRoute>
+                    }
+                />
+            </Route>
+
+            <Route
+                path="*"
+                element={
+                    <Navigate to={auth.isAuthenticated ? "/app" : "/login"} replace />
+                }
+            />
+        </Routes>
     </BrowserRouter>
   );
 }

@@ -6,7 +6,8 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "logout": "Logout"
+    "logout": "Logout",
+    "more": "More"
   },
   "auth": {
     "login": "Login",

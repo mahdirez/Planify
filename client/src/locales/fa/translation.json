@@ -6,7 +6,8 @@
     "cancel": "انصراف",
     "delete": "حذف",
     "edit": "ویرایش",
-    "logout": "خروج"
+    "logout": "خروج",
+    "more": "بیشتر"
   },
   "auth": {
     "login": "ورود",
