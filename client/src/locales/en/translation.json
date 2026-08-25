@@ -50,7 +50,8 @@
     "manageUsers": "Manage Users",
     "activityLogs": "Activity Logs",
     "dashboard": "Dashboard",
-    "systemDashboard": "System Dashboard"
+    "systemDashboard": "System Dashboard",
+    "tasks": "Tasks"
   },
   "pagination": {
     "previous": "Previous",

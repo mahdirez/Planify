@@ -50,7 +50,8 @@
     "manageUsers": "مدیریت کاربران",
     "activityLogs": "گزارش فعالیت‌ها",
     "dashboard": "داشبورد",
-    "systemDashboard": "داشبورد سیستم"
+    "systemDashboard": "داشبورد سیستم",
+    "tasks": "تسک‌ها"
   },
   "pagination": {
     "previous": "قبلی",
