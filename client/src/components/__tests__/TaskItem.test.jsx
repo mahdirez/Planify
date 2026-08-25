@@ -3,6 +3,22 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import TaskItem from "../TaskItem";
 
+vi.mock("react-i18next", () => ({
+    useTranslation: () => ({
+        t: (key) => {
+            const map = {
+                "common.edit": "Edit",
+                "common.delete": "Delete",
+                "common.save": "Save",
+                "common.cancel": "Cancel",
+                "tasks.filterCompleted": "Completed",
+                "tasks.filterPending": "Pending",
+            };
+            return map[key] || key;
+        },
+    }),
+}));
+
 vi.mock("../../api/attachments.api", () => ({
     getTaskAttachmentsApi: vi.fn(() => Promise.resolve({ data: [] })),
     uploadAttachmentApi: vi.fn(),
