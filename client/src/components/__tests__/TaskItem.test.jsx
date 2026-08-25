@@ -11,8 +11,10 @@ vi.mock("react-i18next", () => ({
                 "common.delete": "Delete",
                 "common.save": "Save",
                 "common.cancel": "Cancel",
+                "common.loading": "Loading...",
                 "tasks.filterCompleted": "Completed",
                 "tasks.filterPending": "Pending",
+                "tasks.addAttachment": "Attach",
             };
             return map[key] || key;
         },
@@ -34,7 +36,7 @@ const baseTask = {
 
 const renderTaskItem = async (props) => {
     const utils = render(<TaskItem {...props} />);
-    await waitFor(() => screen.getByText("Attachments"));
+    await waitFor(() => screen.getByText("Attach"));
     return utils;
 };
 

@@ -45,7 +45,8 @@
     "filterPending": "Pending",
     "noTasks": "No tasks yet",
     "noTasksSubtitle": "Create your first task to get started.",
-    "completedCount": "{{completed}} of {{total}} completed"
+    "completedCount": "{{completed}} of {{total}} completed",
+    "addAttachment": "Attach"
   },
   "nav": {
     "manageUsers": "Manage Users",

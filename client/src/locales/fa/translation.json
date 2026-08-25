@@ -45,7 +45,8 @@
     "filterPending": "در انتظار",
     "noTasks": "هنوز تسکی نیست",
     "noTasksSubtitle": "اولین تسک خود را بسازید.",
-    "completedCount": "{{completed}} از {{total}} انجام شده"
+    "completedCount": "{{completed}} از {{total}} انجام شده",
+    "addAttachment": "پیوست فایل"
   },
   "nav": {
     "manageUsers": "مدیریت کاربران",

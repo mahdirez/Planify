@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { MdAttachFile, MdOutlineDescription, MdClose } from "react-icons/md";
 import {
     uploadAttachmentApi,
     getTaskAttachmentsApi,
@@ -7,6 +9,7 @@ import {
 } from "../api/attachments.api";
 
 export default function TaskAttachments({ taskId }) {
+    const { t } = useTranslation();
     const [attachments, setAttachments] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState("");
@@ -54,11 +57,32 @@ export default function TaskAttachments({ taskId }) {
     };
 
     return (
-        <div className="mt-3 rounded-2xl bg-slate-950/60 border border-slate-800 p-3">
-            <div className="flex items-center justify-between mb-2">
-                <p className="text-sm text-slate-400">Attachments</p>
-                <label className="cursor-pointer text-sm text-cyan-400 hover:text-cyan-300">
-                    {uploading ? "Uploading..." : "+ Add file"}
+        <div className="ms-8 mt-2">
+            <div className="flex flex-wrap items-center gap-2">
+                {attachments.map((a) => (
+                    <span
+                        key={a.id}
+                        className="group/chip flex items-center gap-1.5 rounded-lg bg-slate-100 py-1 ps-2 pe-1.5 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                    >
+            <button
+                onClick={() => handleDownload(a)}
+                className="flex items-center gap-1 hover:text-brand-600 dark:hover:text-brand-400"
+            >
+              <MdOutlineDescription size={14} />
+              <span className="max-w-[140px] truncate">{a.original_name}</span>
+            </button>
+            <button
+                onClick={() => handleDelete(a.id)}
+                className="rounded p-0.5 text-slate-400 opacity-0 transition-opacity hover:text-red-500 group-hover/chip:opacity-100"
+            >
+              <MdClose size={13} />
+            </button>
+          </span>
+                ))}
+
+                <label className="flex cursor-pointer items-center gap-1 text-xs font-medium text-slate-400 hover:text-brand-600 dark:hover:text-brand-400">
+                    <MdAttachFile size={14} />
+                    {uploading ? t("common.loading") : t("tasks.addAttachment")}
                     <input
                         type="file"
                         className="hidden"
@@ -68,33 +92,7 @@ export default function TaskAttachments({ taskId }) {
                 </label>
             </div>
 
-            {error && <p className="text-sm text-red-400 mb-2">{error}</p>}
-
-            {attachments.length === 0 ? (
-                <p className="text-sm text-slate-600">No attachments yet</p>
-            ) : (
-                <ul className="space-y-1">
-                    {attachments.map((a) => (
-                        <li
-                            key={a.id}
-                            className="flex items-center justify-between text-sm text-slate-300"
-                        >
-                            <button
-                                onClick={() => handleDownload(a)}
-                                className="hover:text-cyan-400 truncate text-left"
-                            >
-                                {a.original_name}
-                            </button>
-                            <button
-                                onClick={() => handleDelete(a.id)}
-                                className="text-red-400 hover:text-red-300 ml-2"
-                            >
-                                Remove
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
         </div>
     );
 }
