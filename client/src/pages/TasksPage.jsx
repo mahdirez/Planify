@@ -1,18 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import TaskItem from "../components/TaskItem";
-import { useTasks } from "../hooks/useTasks";
-import { Link } from "react-router-dom";
-import Pagination from "../components/Pagination";
+import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import LanguageSwitcher from "../components/LanguageSwitcher";
+import { MdSearch, MdAdd } from "react-icons/md";
+import TaskItem from "../components/TaskItem";
+import Pagination from "../components/Pagination";
+import { useTasks } from "../hooks/useTasks";
 
-export default function TasksPage({ auth }) {
-  const navigate = useNavigate();
-
-  const { t } = useTranslation();
-
-  const { user, logout } = auth;
+export default function TasksPage() {
+    const { auth } = useOutletContext();
+    const { t } = useTranslation();
     const {
         tasks,
         loading,
@@ -22,7 +18,6 @@ export default function TasksPage({ auth }) {
         deleteTask,
         toggleTask,
         saveEdit,
-        refetch,
         search,
         setSearch,
         statusFilter,
@@ -32,174 +27,102 @@ export default function TasksPage({ auth }) {
         totalPages,
     } = useTasks();
 
-  const [description, setDescription] = useState("");
-  const isAdding = actionLoading?.action === "add";
+    const [description, setDescription] = useState("");
+    const isAdding = actionLoading?.action === "add";
 
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!description.trim() || isAdding) return;
-    await addTask(description.trim());
-    setDescription("");
-  };
+    const submit = async (e) => {
+        e.preventDefault();
+        if (!description.trim() || isAdding) return;
+        await addTask(description.trim());
+        setDescription("");
+    };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 p-4">
-      <div className="mx-auto max-w-5xl">
-        <header className="mb-8 rounded-3xl bg-slate-900/90 border border-slate-800 p-6 shadow-xl shadow-slate-950/20">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-cyan-400">
-                Planify
-              </p>
-              <h1 className="mt-2 text-4xl font-semibold tracking-tight">
-                  {t("tasks.title")}
-              </h1>
-              <p className="mt-3 max-w-2xl text-slate-400">
-                  {t("tasks.subtitle")}
-              </p>
-            </div>
-            <div className="flex items-center gap-3 rounded-3xl bg-slate-950/70 border border-slate-800 p-4">
-              <div>
-                <p className="text-sm text-slate-500">{t("tasks.signedInAs")}</p>
-                <p className="font-medium text-white">{user?.email}</p>
-              </div>
-                {auth.isAdmin && (
-                    <Link
-                        to="/admin/users"
-                        className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-                    >
-                        {t("nav.manageUsers")}
-                    </Link>
-                )}
-
-                {auth.isAdmin && (
-                    <Link
-                        to="/admin/logs"
-                        className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-                    >
-                        {t("nav.activityLogs")}
-                    </Link>
-                )}
-                <Link
-                    to="/dashboard"
-                    className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-                >
-                    {t("nav.dashboard")}
-                </Link>
-                {auth.isAdmin && (
-                    <Link
-                        to="/admin/dashboard"
-                        className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-                    >
-                        {t("nav.systemDashboard")}
-                    </Link>
-                )}
-              <button
-                onClick={handleLogout}
-                className="rounded-2xl bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-              >
-                  {t("common.logout")}
-              </button>
-                <LanguageSwitcher />
-            </div>
-          </div>
-        </header>
-        <section className="mb-6 rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
-          <form onSubmit={submit} className="flex flex-col gap-3 sm:flex-row">
-            <label className="sr-only" htmlFor="taskDescription">
-              New task
-            </label>
-            <input
-              id="taskDescription"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder={t("tasks.addPlaceholder")}
-              className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-5 py-4 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
-              disabled={isAdding}
-            />
-            <button
-              type="submit"
-              disabled={isAdding || !description.trim()}
-              className="rounded-3xl bg-gradient-to-r from-cyan-500 to-blue-500 px-6 py-4 font-semibold text-slate-950 transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-                {isAdding ? t("tasks.adding") : t("tasks.addButton")}
-            </button>
-          </form>
-        </section>
-          <section className="mb-6 rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
-              <div className="flex flex-col gap-3 sm:flex-row">
-                  <input
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      placeholder={t("tasks.searchPlaceholder")}
-                      className="w-full rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
-                  />
-                  <select
-                      value={statusFilter}
-                      onChange={(e) => setStatusFilter(e.target.value)}
-                      className="rounded-3xl border border-slate-700 bg-slate-950 px-5 py-3 text-slate-100 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
-                  >
-                      <option value="all">{t("tasks.filterAll")}</option>
-                      <option value="true">{t("tasks.filterCompleted")}</option>
-                      <option value="false">{t("tasks.filterPending")}</option>
-                  </select>
-              </div>
-          </section>
-        {error && (
-          <div className="mb-6 rounded-3xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
-            {error}
-          </div>
-        )}
-        <section className="rounded-3xl bg-slate-900/90 border border-slate-800 p-6">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center gap-3 py-16 text-slate-400">
-              <div className="h-10 w-10 rounded-full border-4 border-slate-700 border-t-cyan-400 animate-spin" />
-              <p>Loading your tasks...</p>
-            </div>
-          ) : tasks.length === 0 ? (
-            <div className="text-center py-16 text-slate-500">
-              <p className="text-xl font-medium">{t("tasks.noTasks")}</p>
-              <p className="mt-2 text-slate-400">
-                  {t("tasks.noTasksSubtitle")}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {tasks.map((task) => (
-                <TaskItem
-                  key={task.id}
-                  task={task}
-                  onDelete={deleteTask}
-                  onToggle={toggleTask}
-                  onSaveEdit={saveEdit}
-                  actionLoading={actionLoading}
+    return (
+        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
+            <form onSubmit={submit} className="mb-4 flex gap-3">
+                <input
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    placeholder={t("tasks.addPlaceholder")}
+                    disabled={isAdding}
+                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                 />
-              ))}
-            </div>
-          )}
+                <button
+                    type="submit"
+                    disabled={isAdding || !description.trim()}
+                    className="flex shrink-0 items-center gap-1.5 rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                    <MdAdd size={18} />
+                    {isAdding ? t("tasks.adding") : t("tasks.addButton")}
+                </button>
+            </form>
 
-          {!loading && tasks.length > 0 && (
-            <div className="mt-6 rounded-3xl bg-slate-950/90 border border-slate-800 p-4 text-slate-400">
-                {t("tasks.completedCount", {
-                    completed: tasks.filter((t) => t.completed).length,
-                    total: tasks.length,
-                })}
+            <div className="mb-4 flex flex-col gap-3 sm:flex-row">
+                <div className="relative w-full">
+                    <MdSearch
+                        className="pointer-events-none absolute inset-y-0 start-3 my-auto text-slate-400"
+                        size={18}
+                    />
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder={t("tasks.searchPlaceholder")}
+                        className="w-full rounded-xl border border-slate-200 bg-white py-2.5 ps-9 pe-4 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    />
+                </div>
+                <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                >
+                    <option value="all">{t("tasks.filterAll")}</option>
+                    <option value="true">{t("tasks.filterCompleted")}</option>
+                    <option value="false">{t("tasks.filterPending")}</option>
+                </select>
             </div>
-          )}
-        </section>
-      </div>
-        <Pagination page={page}
-                    totalPages={totalPages}
-                    onPageChange={setPage}
-                    previousLabel={t("pagination.previous")}
-                    nextLabel={t("pagination.next")}
-                    pageLabel={t("pagination.pageOf", { page, totalPages })}
-        />
-    </div>
-  );
+
+            {error && (
+                <div className="mb-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
+                    {error}
+                </div>
+            )}
+
+            <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+                {loading ? (
+                    <div className="flex flex-col items-center justify-center gap-3 py-16 text-slate-400">
+                        <div className="h-8 w-8 rounded-full border-2 border-slate-200 border-t-brand-500 animate-spin dark:border-slate-700" />
+                        <p className="text-sm">{t("common.loading")}</p>
+                    </div>
+                ) : tasks.length === 0 ? (
+                    <div className="py-16 text-center">
+                        <p className="font-medium text-slate-600 dark:text-slate-300">
+                            {t("tasks.noTasks")}
+                        </p>
+                        <p className="mt-1 text-sm text-slate-400">
+                            {t("tasks.noTasksSubtitle")}
+                        </p>
+                    </div>
+                ) : (
+                    <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                        {tasks.map((task) => (
+                            <TaskItem
+                                key={task.id}
+                                task={task}
+                                onDelete={deleteTask}
+                                onToggle={toggleTask}
+                                onSaveEdit={saveEdit}
+                                actionLoading={actionLoading}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {!loading && tasks.length > 0 && (
+                <div className="mt-4">
+                    <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
+                </div>
+            )}
+        </div>
+    );
 }
