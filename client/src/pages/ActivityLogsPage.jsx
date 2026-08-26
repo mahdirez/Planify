@@ -27,7 +27,8 @@ export default function ActivityLogsPage() {
                 {t("admin.activityLogs")}
             </h1>
 
-            <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+            {/* دسکتاپ: جدول */}
+            <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white md:block dark:border-slate-800 dark:bg-slate-900">
                 <table className="w-full text-start text-sm">
                     <thead>
                     <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-800">
@@ -58,6 +59,34 @@ export default function ActivityLogsPage() {
                     ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* موبایل: کارت */}
+            <div className="space-y-3 md:hidden">
+                {logs.map((log, i) => (
+                    <div
+                        key={log.id}
+                        className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+                    >
+                        <div className="mb-2 flex items-center justify-between">
+              <span className="truncate text-sm font-medium text-slate-700 dark:text-slate-200">
+                {log.email}
+              </span>
+                            <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                {log.action}
+              </span>
+                        </div>
+                        {log.details && (
+                            <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                                {log.details}
+                            </p>
+                        )}
+                        <div className="flex justify-between text-xs text-slate-400">
+                            <span>#{i + 1}</span>
+                            <span>{new Date(log.created_at).toLocaleString()}</span>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

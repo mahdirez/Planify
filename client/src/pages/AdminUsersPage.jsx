@@ -21,15 +21,26 @@ export default function AdminUsersPage() {
         );
     }
 
+    const RoleBadge = ({ role }) => (
+        <span
+            className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                role === "admin"
+                    ? "bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400"
+                    : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+            }`}
+        >
+      {role === "admin" ? t("admin.roleAdmin") : t("admin.roleUser")}
+    </span>
+    );
+
     return (
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
-            <div className="mb-5 flex items-center justify-between">
-                <h1 className="text-lg font-semibold text-slate-800 dark:text-white">
-                    {t("admin.users")}
-                </h1>
-            </div>
+            <h1 className="mb-5 text-lg font-semibold text-slate-800 dark:text-white">
+                {t("admin.users")}
+            </h1>
 
-            <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+            {/* دسکتاپ: جدول */}
+            <div className="hidden overflow-x-auto rounded-2xl border border-slate-200 bg-white md:block dark:border-slate-800 dark:bg-slate-900">
                 <table className="w-full text-start text-sm">
                     <thead>
                     <tr className="border-b border-slate-100 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-800">
@@ -47,15 +58,7 @@ export default function AdminUsersPage() {
                                 {u.email}
                             </td>
                             <td className="px-5 py-3">
-                  <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                          u.role === "admin"
-                              ? "bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400"
-                              : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
-                      }`}
-                  >
-                    {u.role === "admin" ? t("admin.roleAdmin") : t("admin.roleUser")}
-                  </span>
+                                <RoleBadge role={u.role} />
                             </td>
                             <td className="px-5 py-3 text-slate-400">
                                 {new Date(u.created_at).toLocaleDateString()}
@@ -64,6 +67,27 @@ export default function AdminUsersPage() {
                     ))}
                     </tbody>
                 </table>
+            </div>
+
+            {/* موبایل: کارت */}
+            <div className="space-y-3 md:hidden">
+                {users.map((u, i) => (
+                    <div
+                        key={u.id}
+                        className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+                    >
+                        <div className="mb-2 flex items-center justify-between">
+              <span className="truncate font-medium text-slate-700 dark:text-slate-200">
+                {u.email}
+              </span>
+                            <RoleBadge role={u.role} />
+                        </div>
+                        <div className="flex justify-between text-xs text-slate-400">
+                            <span>#{i + 1}</span>
+                            <span>{new Date(u.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
