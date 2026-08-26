@@ -9,6 +9,7 @@ import {
     MdLogout,
 } from "react-icons/md";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Sidebar({ auth }) {
     const navigate = useNavigate();
@@ -67,8 +68,9 @@ export default function Sidebar({ auth }) {
             </nav>
 
             <div className="border-t border-slate-200 p-3 dark:border-slate-800">
-                <div className="mb-2 px-2">
+                <div className="mb-2 flex items-center justify-between gap-2 px-2">
                     <LanguageSwitcher />
+                    <ThemeToggle />
                 </div>
                 <div className="flex items-center justify-between rounded-xl px-2 py-2">
                     <div className="flex items-center gap-2 min-w-0">
