@@ -59,5 +59,15 @@
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {{page}} of {{totalPages}}"
+  },
+  "dashboard": {
+    "overview": "Overview",
+    "totalTasks": "Total Tasks",
+    "completedTasks": "Completed Tasks",
+    "pendingTasks": "Pending Tasks",
+    "motivationTitle": "Keep going! You're doing great.",
+    "motivationSubtitle": "Stay organized and get more done.",
+    "totalUsers": "Total Users",
+    "tasksCreatedTrend": "Tasks Created (Last 7 Days)"
   }
 }

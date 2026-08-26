@@ -59,5 +59,15 @@
     "previous": "قبلی",
     "next": "بعدی",
     "pageOf": "صفحه {{page}} از {{totalPages}}"
+  },
+  "dashboard": {
+    "overview": "نمای کلی",
+    "totalTasks": "کل تسک‌ها",
+    "completedTasks": "تسک‌های انجام‌شده",
+    "pendingTasks": "تسک‌های در انتظار",
+    "motivationTitle": "همین‌طور ادامه بده! عالی پیش می‌ری.",
+    "motivationSubtitle": "منظم بمون و کارهای بیشتری انجام بده.",
+    "totalUsers": "کل کاربران",
+    "tasksCreatedTrend": "تسک‌های ساخته‌شده (۷ روز اخیر)"
   }
 }
