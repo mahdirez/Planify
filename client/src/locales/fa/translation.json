@@ -69,5 +69,18 @@
     "motivationSubtitle": "منظم بمون و کارهای بیشتری انجام بده.",
     "totalUsers": "کل کاربران",
     "tasksCreatedTrend": "تسک‌های ساخته‌شده (۷ روز اخیر)"
+  },
+  "admin": {
+    "users": "کاربران",
+    "email": "ایمیل",
+    "role": "نقش",
+    "joinedAt": "تاریخ عضویت",
+    "roleAdmin": "ادمین",
+    "roleUser": "کاربر",
+    "activityLogs": "گزارش فعالیت‌ها",
+    "user": "کاربر",
+    "action": "عملیات",
+    "details": "جزئیات",
+    "dateTime": "تاریخ و زمان"
   }
 }

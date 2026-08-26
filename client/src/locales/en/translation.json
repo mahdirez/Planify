@@ -69,5 +69,18 @@
     "motivationSubtitle": "Stay organized and get more done.",
     "totalUsers": "Total Users",
     "tasksCreatedTrend": "Tasks Created (Last 7 Days)"
+  },
+  "admin": {
+    "users": "Users",
+    "email": "Email",
+    "role": "Role",
+    "joinedAt": "Joined At",
+    "roleAdmin": "Admin",
+    "roleUser": "User",
+    "activityLogs": "Activity Logs",
+    "user": "User",
+    "action": "Action",
+    "details": "Details",
+    "dateTime": "Date & Time"
   }
 }
