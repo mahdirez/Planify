@@ -4,6 +4,10 @@ import { createRoot } from "react-dom/client";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+import "@fontsource/vazirmatn/400.css";
+import "@fontsource/vazirmatn/500.css";
+import "@fontsource/vazirmatn/600.css";
+import "@fontsource/vazirmatn/700.css";
 import App from "./App.jsx";
 
 
